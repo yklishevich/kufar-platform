@@ -1,0 +1,166 @@
+{
+  "originHash" : "b1d146e0456919104971c2565a383d9e56e69a12b15cc06ceb22d5129763d5a3",
+  "pins" : [
+    {
+      "identity" : "kufar.Analytics",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.AppComposition",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.AppFeature",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Auto",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.AutoContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.CatalogContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.DesignComponents",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.DesignTokens",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Foundation",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Goods",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.GoodsContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.Identity",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.IdentityContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.ListingKit",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Navigation",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Posting",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.PostingContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.SchemaKit",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "kufar.Search",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kufar.SearchContracts",
+      "kind" : "registry",
+      "location" : "",
+      "state" : {
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

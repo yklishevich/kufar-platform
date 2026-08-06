@@ -1,0 +1,11 @@
+.DS_Store
+.build/
+DerivedData/
+.swiftpm/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+
+# Здесь, в отличие от пакетов-библиотек, резолв фиксировать НУЖНО:
+# версии зависимостей выбирает app-таргет, сборка должна быть повторяемой.
+!Package.resolved
