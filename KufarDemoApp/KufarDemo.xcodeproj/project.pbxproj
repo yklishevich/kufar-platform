@@ -12,7 +12,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A32D861C302519D2009D2A66 /* KufarDemo.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; name = KufarDemo.xctestplan; path = ../../KufarDemo.xctestplan; sourceTree = "<group>"; };
+		A32D862130252F77009D2A66 /* KufarDemo.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = KufarDemo.xctestplan; sourceTree = "<group>"; };
 		A3B84329302311F300F88D62 /* KufarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KufarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -40,7 +40,7 @@
 		A3B84320302311F300F88D62 = {
 			isa = PBXGroup;
 			children = (
-				A32D861C302519D2009D2A66 /* KufarDemo.xctestplan */,
+				A32D862130252F77009D2A66 /* KufarDemo.xctestplan */,
 				A3B8432B302311F300F88D62 /* KufarDemo */,
 				A3B8432A302311F300F88D62 /* Products */,
 			);

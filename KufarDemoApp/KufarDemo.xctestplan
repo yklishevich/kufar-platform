@@ -14,16 +14,16 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:..\/kufar.AppComposition",
-        "identifier" : "ArchitectureTests",
-        "name" : "ArchitectureTests"
+        "containerPath" : "container:..\/kufar.AppFeature",
+        "identifier" : "AppFeatureTests",
+        "name" : "AppFeatureTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:..\/kufar.AppFeature",
-        "identifier" : "AppFeatureTests",
-        "name" : "AppFeatureTests"
+        "containerPath" : "container:..\/kufar.AppComposition",
+        "identifier" : "ArchitectureTests",
+        "name" : "ArchitectureTests"
       }
     }
   ],
