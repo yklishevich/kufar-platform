@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "2CF889E3-9F6E-4FD5-916D-D8E3BFE4AD72",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/kufar.AppComposition",
+        "identifier" : "ArchitectureTests",
+        "name" : "ArchitectureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/kufar.AppFeature",
+        "identifier" : "AppFeatureTests",
+        "name" : "AppFeatureTests"
+      }
+    }
+  ],
+  "version" : 1
+}
