@@ -9,31 +9,31 @@ import XCTest
 /// в CI, а эти тесты запускаются вместе с обычными в Xcode.
 final class BoundaryTests: XCTestCase {
 
-    /// .../app/KufarAppComposition/Tests/ArchitectureTests/файл.swift → воркспейс
+    /// .../platform_team/kufar.AppComposition/Tests/ArchitectureTests/файл.swift → воркспейс
     private var workspace: URL {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()   // ArchitectureTests
             .deletingLastPathComponent()   // Tests
-            .deletingLastPathComponent()   // KufarAppComposition
+            .deletingLastPathComponent()   // kufar.AppComposition
             .deletingLastPathComponent()   // platform_team
     }
 
-    private let verticals = ["Search", "Goods", "Auto", "Profile", "Auth"]
+    private let scope = "kufar"
+    private let verticals = ["Search", "Posting", "Goods", "Auto", "Profile", "Auth"]
 
     private struct Manifest {
-        let name: String
+        /// Идентичность пакета — имя папки (`kufar.Foundation`), а НЕ поле
+        /// `name:` из манифеста. С переходом на реестр SE-0292 адрес перестал
+        /// быть идентичностью, а `name:` ею никогда и не был: он остался
+        /// отображаемым именем и ни на что не влияет.
+        let identity: String
         let url: URL
         let text: String
 
         var products: [String] { text.quoted(after: ".library(name: \"") }
-        /// Зависимости объявлены по URL; имя пакета — последний компонент.
-        var dependencyNames: [String] {
-            text.quoted(after: ".package(url: \"").map {
-                var name = ($0 as NSString).lastPathComponent
-                if name.hasSuffix(".git") { name.removeLast(4) }
-                return name
-            }
-        }
+
+        /// Зависимости адресуются идентичностью реестра.
+        var dependencies: [String] { text.quoted(after: ".package(id: \"") }
     }
 
     private func manifests() throws -> [Manifest] {
@@ -43,8 +43,8 @@ final class BoundaryTests: XCTestCase {
             guard url.lastPathComponent == "Package.swift" else { continue }
             guard !url.path().contains("/.attic/"), !url.path().contains("/.build/") else { continue }
             let text = try String(contentsOf: url, encoding: .utf8)
-            let name = text.quoted(after: "name: \"").first ?? "?"
-            result.append(Manifest(name: name, url: url, text: text))
+            let identity = url.deletingLastPathComponent().lastPathComponent
+            result.append(Manifest(identity: identity, url: url, text: text))
         }
         return result
     }
@@ -115,45 +115,68 @@ final class BoundaryTests: XCTestCase {
     /// не даст SwiftPM — правило перестаёт быть договорённостью.
     func testInternalTargetsAreNotExported() throws {
         let mustStayInternal = ["SearchUI", "SearchData", "SearchDomain",
+                                "PostingUI", "PostingData", "PostingDomain",
                                 "GoodsUI", "GoodsData", "GoodsDomain",
                                 "AutoUI", "AutoData", "AutoDomain",
                                 "ProfileUI", "AuthUI", "AuthData"]
         for manifest in try manifests() {
             for product in manifest.products where mustStayInternal.contains(product) {
-                XCTFail("\(manifest.name): \(product) объявлен продуктом — "
+                XCTFail("\(manifest.identity): \(product) объявлен продуктом — "
                         + "внутренний таргет стал публичным API репозитория")
             }
         }
     }
 
-    /// Контрактный пакет должен оставаться дешёвым для подключения:
-    /// кто берёт маршруты чужой вертикали, не должен резолвить её
-    /// дизайн-систему, аналитику и SwiftUI-граф.
+    /// Контрактный пакет должен оставаться дешёвым для подключения: кто берёт
+    /// маршруты чужой вертикали, не должен резолвить её дизайн-систему,
+    /// аналитику и SwiftUI-граф.
+    ///
+    /// Контракту разрешено ядро и другие контракты — граф остаётся плоским.
     func testContractPackagesStayCheap() throws {
-        let contracts = ["KufarSearchContracts", "KufarGoodsContracts",
-                         "KufarAutoContracts", "KufarIdentityContracts"]
-        for manifest in try manifests() where contracts.contains(manifest.name) {
-            let deps = manifest.dependencyNames
-            XCTAssertEqual(deps, ["KufarFoundation"],
-                           "\(manifest.name) тянет лишнее: \(deps)")
+        let allowed = Set(["\(scope).Foundation"]
+                          + try manifests().map(\.identity).filter { $0.hasSuffix("Contracts") })
+
+        for manifest in try manifests() where manifest.identity.hasSuffix("Contracts") {
+            let extra = manifest.dependencies.filter { !allowed.contains($0) }
+            XCTAssertTrue(extra.isEmpty,
+                          "\(manifest.identity) тянет лишнее: \(extra)")
         }
     }
 
-    /// Repo == package == folder. Локальная подмена в воркспейсе работает
-    /// по identity, а identity — это имя папки. Разъедутся — Xcode пойдёт
-    /// в сеть за версией, которой ещё нет.
-    func testPackageNameMatchesFolderName() throws {
-        for manifest in try manifests() {
-            let folder = manifest.url.deletingLastPathComponent().lastPathComponent
-            XCTAssertEqual(manifest.name, folder,
-                           "пакет \(manifest.name) лежит в папке \(folder)")
+    /// Идентичность пакета — имя его папки, и Xcode подменяет
+    /// registry-зависимость локальной копией, сопоставляя именно их:
+    ///
+    ///   unable to override package 'Foundation' because its identity
+    ///   'kufar.foundation' doesn't match override's identity
+    ///   (directory name) 'foundation'
+    ///
+    /// Отсюда два требования: формат `scope.Name` у каждой папки и наличие
+    /// папки под каждую объявленную зависимость. Поле `name:` из манифеста
+    /// здесь ни при чём — оно давно не идентичность.
+    func testPackageIdentityMatchesFolder() throws {
+        let all = try manifests()
+        let folders = Set(all.map(\.identity))
+
+        for manifest in all {
+            XCTAssertTrue(manifest.identity.hasPrefix("\(scope)."),
+                          "папка \(manifest.identity) не в формате \(scope).Name — "
+                          + "Xcode не подменит registry-зависимость локальной копией")
+
+            for dependency in manifest.dependencies {
+                XCTAssertTrue(folders.contains(dependency),
+                              "\(manifest.identity) зависит от \(dependency), "
+                              + "но папки с таким именем в воркспейсе нет")
+            }
         }
     }
 
     /// Композиционный корень не знает ни одного экрана: assembly возвращают
     /// непрозрачные типы, поэтому import *UI ему не нужен.
     func testCompositionRootDoesNotImportUI() throws {
-        let root = workspace.appending(path: "platform_team/KufarAppComposition/Sources")
+        let root = workspace.appending(path: "platform_team/\(scope).AppComposition/Sources")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: root.path()),
+                      "корень не найден по \(root.path()) — тест проверял бы пустоту")
+
         for (url, text) in swiftFiles(under: root) {
             for module in imports(in: text) where module.hasSuffix("UI") && module != "SwiftUI" {
                 XCTFail("\(url.lastPathComponent): корень импортирует \(module)")
