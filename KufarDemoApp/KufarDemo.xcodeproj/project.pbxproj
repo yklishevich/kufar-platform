@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A32D86003024ED14009D2A66 /* AppComposition in Frameworks */ = {isa = PBXBuildFile; productRef = A32D85FF3024ED14009D2A66 /* AppComposition */; };
+		A32D86173024F7C3009D2A66 /* AppComposition in Frameworks */ = {isa = PBXBuildFile; productRef = A32D86163024F7C3009D2A66 /* AppComposition */; };
 		A3B8433D3023128700F88D62 /* AppComposition in Frameworks */ = {isa = PBXBuildFile; productRef = A3B8433C3023128700F88D62 /* AppComposition */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3B8433D3023128700F88D62 /* AppComposition in Frameworks */,
-				A32D86003024ED14009D2A66 /* AppComposition in Frameworks */,
+				A32D86173024F7C3009D2A66 /* AppComposition in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +73,7 @@
 			name = KufarDemo;
 			packageProductDependencies = (
 				A3B8433C3023128700F88D62 /* AppComposition */,
-				A32D85FF3024ED14009D2A66 /* AppComposition */,
+				A32D86163024F7C3009D2A66 /* AppComposition */,
 			);
 			productName = KufarDemo;
 			productReference = A3B84329302311F300F88D62 /* KufarDemo.app */;
@@ -104,7 +104,7 @@
 			mainGroup = A3B84320302311F300F88D62;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A32D85FE3024ED14009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */,
+				A32D86153024F7C3009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A3B8432A302311F300F88D62 /* Products */;
@@ -356,20 +356,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A32D85FE3024ED14009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */ = {
+		A32D86153024F7C3009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = kufar.AppComposition;
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A32D85FF3024ED14009D2A66 /* AppComposition */ = {
+		A32D86163024F7C3009D2A66 /* AppComposition */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A32D85FE3024ED14009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */;
+			package = A32D86153024F7C3009D2A66 /* XCRemoteSwiftPackageReference "AppComposition" */;
 			productName = AppComposition;
 		};
 		A3B8433C3023128700F88D62 /* AppComposition */ = {
