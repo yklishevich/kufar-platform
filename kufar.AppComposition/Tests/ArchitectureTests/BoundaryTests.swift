@@ -133,10 +133,11 @@ final class BoundaryTests: XCTestCase {
     ///
     /// Контракту разрешено ядро и другие контракты — граф остаётся плоским.
     func testContractPackagesStayCheap() throws {
-        let allowed = Set(["\(scope).Foundation"]
-                          + try manifests().map(\.identity).filter { $0.hasSuffix("Contracts") })
+        let all = try manifests()
+        let contracts = all.map(\.identity).filter { $0.hasSuffix("Contracts") }
+        let allowed = Set(contracts + ["\(scope).Foundation"])
 
-        for manifest in try manifests() where manifest.identity.hasSuffix("Contracts") {
+        for manifest in all where manifest.identity.hasSuffix("Contracts") {
             let extra = manifest.dependencies.filter { !allowed.contains($0) }
             XCTAssertTrue(extra.isEmpty,
                           "\(manifest.identity) тянет лишнее: \(extra)")
