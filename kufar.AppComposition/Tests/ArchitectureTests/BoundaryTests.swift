@@ -16,6 +16,7 @@ final class BoundaryTests: XCTestCase {
             .deletingLastPathComponent()   // Tests
             .deletingLastPathComponent()   // kufar.AppComposition
             .deletingLastPathComponent()   // platform_team
+            .deletingLastPathComponent()   // корень воркспейса
     }
 
     private let scope = "kufar"
@@ -78,6 +79,25 @@ final class BoundaryTests: XCTestCase {
               index + 1 < parts.count
         else { return nil }
         return parts[index + 1]
+    }
+
+    /// Все проверки ниже обходят файлы от `workspace`. Если корень съедет,
+    /// обходчик вернёт пустоту, а тесты станут зелёными, ничего не проверив —
+    /// самый дорогой вид поломки, потому что выглядит как успех.
+    /// Этот тест ловит именно её и должен падать первым.
+    func testWorkspaceRootResolves() throws {
+        let marker = workspace.appending(path: "KufarWorkspace.xcworkspace")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: marker.path()),
+                      "корень воркспейса не найден по \(workspace.path()) — "
+                      + "остальные проверки в этом файле ничего не проверяют")
+
+        let identities = try manifests().map(\.identity)
+        XCTAssertFalse(identities.filter { $0.hasSuffix("Contracts") }.isEmpty,
+                       "контрактные пакеты не найдены — обход не вышел за platform_team")
+        for team in ["search", "posting", "goods", "auto", "identity"] {
+            XCTAssertTrue(identities.contains { $0.lowercased().contains(team) },
+                          "пакеты команды \(team) не попали в обход")
+        }
     }
 
     /// Интерфейс перестал быть data-only — самый частый способ незаметно
