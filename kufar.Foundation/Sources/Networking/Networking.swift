@@ -1,4 +1,5 @@
 import Foundation
+import NetworkingInterface
 
 /// Протокол объявлен здесь, а реализован в Auth — уровнем выше.
 ///
@@ -19,7 +20,9 @@ public enum RetryDecision: Sendable {
     case giveUp
 }
 
-public struct APIClient: Sendable {
+/// Конформит `HTTPPerforming` из соседнего таргета: адаптеры вертикалей
+/// держат протокол, а конкретный тип называет только composition root.
+public struct APIClient: HTTPPerforming {
     private let baseURL: URL
     private let interceptors: [any RequestInterceptor]
 

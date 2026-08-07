@@ -1,16 +1,16 @@
 import Foundation
 import AnalyticsAPI
-import Networking
+import NetworkingInterface
 
 /// Здесь жил бы `import Amplitude`. Вендорский SDK не попадает в граф
 /// ни одной вертикали: они знают только AnalyticsAPI.
 public final class BatchingTracker: AnalyticsTracking, @unchecked Sendable {
-    private let client: APIClient
+    private let client: any HTTPPerforming
     private let lock = NSLock()
     private var queue: [AnalyticsEvent] = []
     private let batchSize: Int
 
-    public init(client: APIClient, batchSize: Int = 20) {
+    public init(client: any HTTPPerforming, batchSize: Int = 20) {
         self.client = client
         self.batchSize = batchSize
     }

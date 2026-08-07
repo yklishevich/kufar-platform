@@ -26,7 +26,7 @@ let package = Package(
             name: "AnalyticsImpl",
             dependencies: [
                 "AnalyticsAPI",
-                .product(name: "Networking", package: "kufar.Foundation")
+                .product(name: "NetworkingInterface", package: "kufar.Foundation")
             ]
         )
     ]
