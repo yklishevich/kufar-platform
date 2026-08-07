@@ -1,25 +1,6 @@
 import Foundation
 import NetworkingInterface
 
-/// Протокол объявлен здесь, а реализован в Auth — уровнем выше.
-///
-/// Это инверсия зависимостей: зависимость сборки идёт Auth → Networking (вниз),
-/// вызов в рантайме — снизу вверх. Положи протокол в Auth — и сети пришлось бы
-/// импортировать аутентификацию: цикл.
-///
-/// Практическая причина именно для классифайда: лента гостю, поиск и просмотр
-/// объявления работают до логина. Сеть, умеющая только авторизованные запросы,
-/// не переиспользуется для большей части трафика.
-public protocol RequestInterceptor: Sendable {
-    func adapt(_ request: URLRequest) async throws -> URLRequest
-    func retry(_ request: URLRequest, dueTo error: any Error) async -> RetryDecision
-}
-
-public enum RetryDecision: Sendable {
-    case retry
-    case giveUp
-}
-
 /// Конформит `HTTPPerforming` из соседнего таргета: адаптеры вертикалей
 /// держат протокол, а конкретный тип называет только composition root.
 public struct APIClient: HTTPPerforming {
